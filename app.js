@@ -7,10 +7,11 @@ const postsRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
 
 const app = express();
-
+mongoose.set('useCreateIndex', true);
 mongoose
   .connect(
-    "mongodb://localhost:27017/LocalHosting"
+    "mongodb://localhost:27017/LocalHosting",
+    { useUnifiedTopology: true,useNewUrlParser:true  }
   )
   .then(() => {
     console.log("Connected to database!");
