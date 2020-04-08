@@ -4,13 +4,13 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 exports.createUser = (req, res, next) => {
-  bcrypt.hash(req.body.Password, 10).then(hash => {
+  bcrypt.hash(req.body.password, 10).then(hash => {
     //console.log(req.body.Name);
     
     const user = new User({
-      email: req.body.Email,
+      email: req.body.email,
       password: hash, 
-      name: req.body.Name
+      name: req.body.name
     });
     user
       .save()
@@ -38,7 +38,7 @@ exports.createUser = (req, res, next) => {
 
 exports.userLogin = (req, res, next) => {
   let fetchedUser;
-  User.findOne({ email: req.body.Email })
+  User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) {
         return res.status(401).json({
@@ -46,7 +46,7 @@ exports.userLogin = (req, res, next) => {
         });
       }
       fetchedUser = user;
-      return bcrypt.compare(req.body.Password, user.password);
+      return bcrypt.compare(req.body.password, user.password);
     })
     .then(result => {
       if (!result) {
@@ -99,7 +99,7 @@ exports.UpdateUser = (req, res, next) => {
   //console.log(req.body);
   
   
-  User.findOne({ email: req.body.Email })
+  User.findOne({ email: req.body.email })
   .then(user => {
     if(!user){
       return res.status(401).json({
@@ -107,8 +107,8 @@ exports.UpdateUser = (req, res, next) => {
       });
     }
     else{
-      user.firstName = req.body.FirstName;
-      user.lastName = req.body.LastName;
+      user.firstName = req.body.firstName;
+      user.lastName = req.body.lastName;
       user.save()
       .then(result => {
         res.status(201).json({
